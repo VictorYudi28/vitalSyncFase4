@@ -26,7 +26,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.psychology_alt),
-          label: 'VITAl',
+          label: 'VitalMaps',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.check_circle),
