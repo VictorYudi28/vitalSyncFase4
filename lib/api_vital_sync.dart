@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart'; // para detectar se é Web
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,67 +18,62 @@ class ApiVitalSyncState extends State<ApiVitalSync> {
   }
 
   Future<void> fetchFrutas() async {
-    List<String> nomesFrutas = [
-      'lemon',
-      'watermelon',
-      'strawberry',
-      'peach',
-      'kiwi',
-      'orange',
-      'apple',
-      'cherry',
-      'pineapple',
-      'mango',
-    ];
-    List<dynamic> resultados = [];
+    // Usar 127.0.0.1 (localhost) para rodar com Flutter Desktop (Windows/macOS/Linux)
+    var url = 'http://127.0.0.1:8080/frutas';
 
-    for (String fruta in nomesFrutas) {
-      var url = 'https://fruityvice.com/api/fruit/$fruta';
+    try {
+      var response = await http.get(Uri.parse(url));
 
-      if (kIsWeb) {
-        url = 'https://cors-anywhere.herokuapp.com/$url';
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        setState(() {
+          frutas = json;
+          carregando = false;
+        });
+      } else {
+        print('Erro ao buscar frutas: ${response.statusCode}');
+        setState(() {
+          carregando = false;
+        });
       }
-
-      try {
-        var response = await http.get(Uri.parse(url));
-
-        if (response.statusCode == 200) {
-          var json = jsonDecode(response.body);
-          resultados.add(json);
-        } else {
-          print('Erro ao buscar $fruta: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Erro na requisição de $fruta: $e');
-      }
+    } catch (e) {
+      print('Erro na requisição: $e');
+      setState(() {
+        carregando = false;
+      });
     }
-
-    setState(() {
-      frutas = resultados;
-      carregando = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Recomendações')),
+      appBar: AppBar(title: Text('Recomendações de Frutas')),
       body: carregando
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
         itemCount: frutas.length,
         itemBuilder: (context, index) {
           final fruta = frutas[index];
-          return ListTile(
-            title: Text(fruta['name'] ?? 'Sem nome'),
-            subtitle:
-            Text("Calorias: ${fruta['nutritions']['calories']}"),
+          return Card(
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ListTile(
+              title: Text(
+                fruta['nome'] ?? 'Sem nome',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 4),
+                  Text("Calorias: ${fruta['calorias'] ?? 'N/A'}"),
+                  Text("Vitaminas: ${fruta['vitaminas'] ?? 'N/A'}"),
+                  Text("Peso médio: ${fruta['pesoMedio'] ?? 'N/A'} kg"),
+                ],
+              ),
+            ),
           );
         },
       ),
     );
   }
 }
-
-
-
