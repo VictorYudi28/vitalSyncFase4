@@ -14,9 +14,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  google_maps_flutter: ^2.2.5
   http: ^1.4.0
-
+  flutter_dotenv: ^5.0.2
+  flutter_gemini: ^3.0.0 # integração com Gemini (Google AI)
 
 dev_dependencies:
   flutter_test:
@@ -27,14 +27,9 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - assets/cadeado.png
     - assets/coracao.png
     - assets/personicon.png
 
-  # Para adicionar fontes personalizadas, descomente e edite abaixo:
-  # fonts:
-  #   - family: NomeDaFonte
-  #     fonts:
-  #       - asset: fonts/NomeDaFonte-Regular.ttf
-  #       - asset: fonts/NomeDaFonte-Bold.ttf
-  #         weight: 700
+

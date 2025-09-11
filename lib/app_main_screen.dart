@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart' hide Title;
 import 'package:flutter/material.dart' hide Title;
 import 'package:vitalsync/profile.dart';
-import 'package:vitalsync/vital_maps_screen.dart';
+import 'package:vitalsync/vitalAI.dart';
 import 'api_vital_sync.dart';
 import 'custon_bottomNavigationBar.dart';
 import 'general.dart';
@@ -17,7 +17,7 @@ class AppMainScreenState extends State<AppMainScreen> {
 
   final List<Widget> _pages = [
     Profile(),
-    VitalMapsScreen(),
+    VitalIAScreen(),
     ApiVitalSync(),
     General(),
   ];
